@@ -8,7 +8,7 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 server "web23.swisscenter.com", user: "maw11_6",ssh_options: {
     #keys: %w(/home/robiel/id_rsa),
-    keys: %w(./config/rob_rsa),
+    keys: %w(./config/mat_rsa),
     forward_agent: false,
     auth_methods: %w(publickey),
 }
@@ -23,6 +23,12 @@ set :laravel_set_acl_paths, false
 set :laravel_upload_dotenv_file_on_deploy, false
 
 set :keep_releases,2
+
+after  'composer:run',    'laravel:storage_link'
+after  'composer:run',    'laravel:optimize'
+after  'composer:run',    'copy_dotenv'
+after  'composer:run',    'laravel:migrate'
+
 
 
 
